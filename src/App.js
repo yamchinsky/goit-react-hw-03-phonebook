@@ -15,6 +15,26 @@ class App extends Component {
     filter: "",
   };
 
+  componentDidMount() {
+    console.log("app did mount");
+
+    const contacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts && this.state.contacts.lenght > 0) {
+      this.state({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("app update mount");
+
+    if (this.state.contacts !== prevState.contacts) {
+      console.log("обновилось contacts field");
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
+
   changeFilter = (filter) => {
     this.setState({ filter });
   };
@@ -50,26 +70,6 @@ class App extends Component {
       return { contacts: [...preState.contacts, newContact] };
     });
   };
-
-  componentDidMount() {
-    console.log("app did mount");
-
-    const contacts = localStorage.getItem("contacts");
-    const parsedContacts = JSON.parse(contacts);
-
-    if (parsedContacts && this.state.contacts.lenght > 0) {
-      this.state({ contacts: parsedContacts });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log("app update mount");
-
-    if (this.state.contacts !== prevState.contacts) {
-      console.log("обновилось contacts field");
-      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
-    }
-  }
 
   render() {
     const { contacts, filter } = this.state;
